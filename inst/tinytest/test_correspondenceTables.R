@@ -123,6 +123,7 @@ expect_equal(CT_BS[[1]], Ctext_BS)
 
 
 #fullPath("namesTest.csv", "names.csv")
+##new 1
 Tables = system.file("extdata/test", "names.csv", package = "correspondenceTables")
 
 ABC = system.file("extdata/test", "ABC.csv", package = "correspondenceTables")
@@ -137,3 +138,9 @@ TEST_trim = newCorrespondenceTable(Tables, CSVout = NULL, "none", 0.96, Redundan
 expect_equal(TEST[[1]][1:4], ABC)
 expect_equal(TEST_trim[[1]][1:4], ABC_Trim)
 
+
+##new 2
+Tables1 = system.file("extdata/test", "names1.csv", package = "correspondenceTables")
+
+TEST2 = newCorrespondenceTable(Tables1, CSVout = NULL, "none", 0.96, Redundancy_trim = FALSE)
+TEST_trim2 = newCorrespondenceTable(Tables1, CSVout = NULL, "none", 0.96, Redundancy_trim = TRUE)
