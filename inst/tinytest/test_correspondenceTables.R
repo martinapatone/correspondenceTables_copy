@@ -143,4 +143,23 @@ expect_equal(TEST_trim[[1]][1:4], ABC_Trim)
 Tables1 = system.file("extdata/test", "names1.csv", package = "correspondenceTables")
 
 TEST2 = newCorrespondenceTable(Tables1, CSVout = NULL, "none", 0.96, Redundancy_trim = FALSE)
-TEST_trim2 = newCorrespondenceTable(Tables1, CSVout = NULL, "none", 0.96, Redundancy_trim = TRUE)
+
+
+TEST2_T = system.file("extdata/test", "nomatch_test_new.csv", package = "correspondenceTables")
+TEST2_T = utils::read.csv(TEST2_T, sep = ",", header = TRUE, check.names = FALSE, colClasses = c("character"), encoding = "UTF-8")
+TEST2_T$sort = 1:nrow(TEST2_T)
+
+legend = system.file("extdata/test", "legend_nomatch_new.csv", package = "correspondenceTables")
+legend = utils::read.csv(legend, sep = ",", header = TRUE, check.names = FALSE, colClasses = c("character"), encoding = "UTF-8")
+colnames(legend)[2:5] = c("NoMatchToAStar","NoMatchToB", "NoMatchFromAStar", "NoMatchFromB")
+
+x = as.data.frame(UCT[[1]])
+y = as.data.frame(legend)
+
+test = merge(x,y, by=c("NoMatchToAStar","NoMatchToB", "NoMatchFromAStar", "NoMatchFromB"), all.x = TRUE)
+
+test = test[order(as.numeric(test$sort)),]
+UTC_T = UTC_T[order(as.numeric(UTC_T$sort)),]
+
+expect_equal(test[,18], UTC_T[,8])
+

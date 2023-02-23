@@ -182,7 +182,6 @@
 #'      unlink(csv_files)
 #'     }
 
-
 newCorrespondenceTable <- function(Tables, CSVout = NULL, Reference = "none", MismatchTolerance = 0.2, Redundancy_trim = TRUE) {
   
   # Check if the file that contains the names of both classifications and
@@ -1880,6 +1879,7 @@ newCorrespondenceTable <- function(Tables, CSVout = NULL, Reference = "none", Mi
   }
   
   tryCatch({
+
     # The final correspondence table A:B is sorted, firstly, based on
     # classification A, and then, based on classification B.
     correspondenceAB <- correspondenceAB[order(correspondenceAB[, 1], correspondenceAB[,
@@ -1895,13 +1895,16 @@ newCorrespondenceTable <- function(Tables, CSVout = NULL, Reference = "none", Mi
     }
     max_col = num_link + 2
     
+    #Do redundancy trim only if redundancy is there (MP) 
+    if (length(which(correspondenceAB$Redundancy == 1)) != 0){
+    
     # Find unique combination of A and B and identify them with a number
     uniqueAB = unique(correspondenceAB[which(correspondenceAB$Redundancy == 1),c(1, max_col)])
     uniqueAB$id_to_use = 1:nrow(uniqueAB)
     
     correspondenceAB = merge(correspondenceAB, uniqueAB, by = colnames(correspondenceAB)[c(1,max_col)], all.x = TRUE)[, union(names(correspondenceAB), names(uniqueAB))]
     col_link = grep("id_to_use", colnames(correspondenceAB), value = T)
-    
+
     ### new but probably slower 
     if (Redundancy_trim == TRUE){
       x_temp = split(correspondenceAB[which(correspondenceAB$Redundancy == 1), col_multiple], correspondenceAB[which(correspondenceAB$Redundancy == 1), col_link])
@@ -1925,6 +1928,9 @@ newCorrespondenceTable <- function(Tables, CSVout = NULL, Reference = "none", Mi
       dup = as.numeric(duplicated(correspondenceAB[,1:max_col]))
       correspondenceAB = correspondenceAB[which(dup == 0), ]
       
+    }
+    } else {
+      correspondenceAB = correspondenceAB
     }
     
     if (Redundancy_trim==FALSE){
