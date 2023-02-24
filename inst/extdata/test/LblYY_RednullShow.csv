@@ -1,4 +1,4 @@
-﻿NACE2code,NACE21code,CPAcode,CodeChange,Redundancy,,NoMatchToAStar,NoMatchToB,NoMatchFromAStar,NoMatchFromB,LabelChange,NACE2code_NACE2label,NACE21code_NACE21label
+﻿NACE2code,NACE21code,CPAcode,CodeChange,Redundancy,Redundancy_keep,NoMatchToAStar,NoMatchToB,NoMatchFromAStar,NoMatchFromB,LabelChange,NACE2code_NACE2label,NACE21code_NACE21label
 11,10,101,1,1,1,0,0,0,0,1,Apples,Banana
 12,10,101,1,1,0,0,0,0,0,1,Apples,Banana
 10,12,101,1,0,0,0,0,0,0,1,Pears,Apples

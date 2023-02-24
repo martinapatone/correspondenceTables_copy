@@ -54,7 +54,7 @@ test = merge(x,y, by=c("NoMatchToAStar","NoMatchToB", "NoMatchFromAStar", "NoMat
 test = test[order(as.numeric(test$sort)),]
 UTC_T = UTC_T[order(as.numeric(UTC_T$sort)),]
 
-expect_equal(test[,18], UTC_T[,8])
+expect_equal(test[,19], UTC_T[,8])
 
 # TEST 2 - Redundancy
 A = system.file("extdata/test", "NACE2_Red.csv", package = "correspondenceTables")
@@ -62,10 +62,6 @@ AStar = system.file("extdata/test", "NACE21_Red.csv", package = "correspondenceT
 B = system.file("extdata/test", "CPA_Red.csv", package = "correspondenceTables")
 AB = system.file("extdata/test", "NACECPA_Red.csv", package = "correspondenceTables")
 AAStar = system.file("extdata/test", "NACE221_Red.csv", package = "correspondenceTables")
-
-Reference = "B"
-MismatchToleranceB = 0.3
-MismatchToleranceAStar = 0.6
 
 CT_nullT = updateCorrespondenceTable(A, B, AStar, AB, AAStar, NULL, "none", 0.4, 0.4, TRUE)
 CT_nullS = updateCorrespondenceTable(A, B, AStar, AB, AAStar, NULL, "none", 0.4, 0.4, FALSE)
@@ -102,17 +98,17 @@ expect_equal(CT_BS[[1]], Ctext_BS)
 
 
 # TEST 3 - new correspondence table
-tmp_dir<-tempdir()
-csv_files<-list.files(tmp_dir, pattern = ".csv")
+tmp_dir = tempdir()
+csv_files = list.files(tmp_dir, pattern = ".csv")
 if (length(csv_files)>0) unlink(csv_files)
 
 fullPath = function(CSVraw, CSVappended){
-  NamesCsv <- system.file("extdata/test", CSVraw, package = "correspondenceTables")
-  A <- read.csv(NamesCsv, header = FALSE, sep = ",")
+  NamesCsv = system.file("extdata/test", CSVraw, package = "correspondenceTables")
+  A = read.csv(NamesCsv, header = FALSE, sep = ",")
   for (i in 1:nrow(A)) {
     for (j in 1:ncol(A)) {
       if (A[i,j]!="") {
-        A[i, j] <- system.file("extdata", A[i, j], package = "correspondenceTables")
+        A[i, j] = system.file("extdata/test", A[i, j], package = "correspondenceTables")
       }}}
   write.table(x = A, file = file.path(tmp_dir,CSVappended), row.names = FALSE, col.names = FALSE, sep = ",")
   return(A)
@@ -135,12 +131,9 @@ expect_equal(TEST[[1]][1:4], ABC)
 expect_equal(TEST_trim[[1]][1:4], ABC_Trim)
 
 
-Reference = "none"
-MismatchTolerance = 0.96
-
-
 ##new 2
-Tables1 = system.file("extdata/test", "names1.csv", package = "correspondenceTables")
+fullPath("names2.csv", "names.csv")
+Tables = system.file(file.path(tmp_dir,"names.csv"), package = "correspondenceTables")
 
 TEST2 = newCorrespondenceTable(Tables1, CSVout = NULL, "none", 0.96, Redundancy_trim = FALSE)
 TEST2[[1]]$sort = 1:nrow(TEST2[[1]])
