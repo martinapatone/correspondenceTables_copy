@@ -107,7 +107,9 @@ expect_equal(CT_BS[[1]], Ctext_BS)
 
 
 # TEST 3 - new correspondence table
-tmp_dir = tempdir()
+tmp_dir<-tempdir()
+csv_files<-list.files(tmp_dir, pattern = ".csv")
+if (length(csv_files)>0) unlink(csv_files)
 
 fullPath = function(CSVraw, CSVappended){
   NamesCsv <- system.file("extdata/test", CSVraw, package = "correspondenceTables")
@@ -121,9 +123,7 @@ fullPath = function(CSVraw, CSVappended){
   return(A)
 }
 
-
 ##new 1
-
 fullPath("names1.csv", "names.csv")
 Tables = system.file(file.path(tmp_dir,"names.csv"), package = "correspondenceTables")
 

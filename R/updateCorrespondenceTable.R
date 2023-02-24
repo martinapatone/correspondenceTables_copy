@@ -812,9 +812,10 @@ updateCorrespondenceTable <- function(A, B, AStar, AB, AAStar, CSVout = NULL, Re
   if (Redundancy_trim == FALSE){
     #add a redundancy keep flag to indicate which row will be kept
     dup = as.numeric(duplicated(List[,c(2,3)]))
+    red_col = grep("Redundancy", colnames(List), value = T)
     List$Redundancy_keep = rep(0, nrow(List))
     List$Redundancy_keep[which(dup == "0" & List$Redundancy == "1")] = 1
-    List = List[,c(1:5, ncol(List), 6:(ncol(List)-1))]
+    List = List[,c(1:red_col, ncol(List), (red_col+1):(ncol(List)-1))]
   }
   
   tryCatch({
