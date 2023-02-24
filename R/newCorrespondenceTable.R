@@ -1873,8 +1873,6 @@ newCorrespondenceTable <- function(Tables, CSVout = NULL, Reference = "none", Mi
          round(length(which(as.vector(correspondenceAB$Unmatched) == 1))/nrow(correspondenceAB)*100,2),"% is unmatched which exceeds the mismatch tolerance of ", MismatchTolerance)
   }
   
-  correspondenceAB = correspondenceAB_ori
-  
   
   tryCatch({
 
