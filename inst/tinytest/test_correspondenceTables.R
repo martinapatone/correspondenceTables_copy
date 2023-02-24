@@ -110,7 +110,7 @@ expect_equal(CT_BS[[1]], Ctext_BS)
 tmp_dir = tempdir()
 
 fullPath = function(CSVraw, CSVappended){
-  NamesCsv <- system.file("extdata", CSVraw, package = "correspondenceTables")
+  NamesCsv <- system.file("extdata/test", CSVraw, package = "correspondenceTables")
   A <- read.csv(NamesCsv, header = FALSE, sep = ",")
   for (i in 1:nrow(A)) {
     for (j in 1:ncol(A)) {
