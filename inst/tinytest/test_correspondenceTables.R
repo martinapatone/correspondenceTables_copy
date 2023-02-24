@@ -20,9 +20,6 @@ Bno = system.file("extdata/test", "CPA.csv", package = "correspondenceTables")
 ABno = system.file("extdata/test", "NACECPA.csv", package = "correspondenceTables")
 AAStarno = system.file("extdata/test", "NACE221.csv", package = "correspondenceTables")
 
-#ClassAno = utils::read.csv(A, sep = ",", header = TRUE, check.names = FALSE, colClasses = c("character"), encoding = "UTF-8")
-#ClassAStarno = utils::read.csv(AStarno, sep = ",", header = TRUE, check.names = FALSE, colClasses = c("character"), encoding = "UTF-8")
-
 CT_nullTno = updateCorrespondenceTable(Ano, Bno, AStarno, ABno, AAStarno, NULL, "A", 0.4, 0.4, FALSE)
 
 Ctext_nullTno = system.file("extdata/test", "LblNY.csv", package = "correspondenceTables")
@@ -66,11 +63,9 @@ B = system.file("extdata/test", "CPA_Red.csv", package = "correspondenceTables")
 AB = system.file("extdata/test", "NACECPA_Red.csv", package = "correspondenceTables")
 AAStar = system.file("extdata/test", "NACE221_Red.csv", package = "correspondenceTables")
 
-ClassA = utils::read.csv(A, sep = ",", header = TRUE, check.names = FALSE, colClasses = c("character"), encoding = "UTF-8")
-ClassAStar = utils::read.csv(AStar, sep = ",", header = TRUE, check.names = FALSE, colClasses = c("character"), encoding = "UTF-8")
-ClassB = utils::read.csv(B, sep = ",", header = TRUE, check.names = FALSE, colClasses = c("character"), encoding = "UTF-8")
-ClassAB = utils::read.csv(AB, sep = ",", header = TRUE, check.names = FALSE, colClasses = c("character"), encoding = "UTF-8")
-ClassAAstar = utils::read.csv(AAStar, sep = ",", header = TRUE, check.names = FALSE, colClasses = c("character"), encoding = "UTF-8")
+Reference = "B"
+MismatchToleranceB = 0.3
+MismatchToleranceAStar = 0.6
 
 CT_nullT = updateCorrespondenceTable(A, B, AStar, AB, AAStar, NULL, "none", 0.4, 0.4, TRUE)
 CT_nullS = updateCorrespondenceTable(A, B, AStar, AB, AAStar, NULL, "none", 0.4, 0.4, FALSE)
