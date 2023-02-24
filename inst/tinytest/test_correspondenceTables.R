@@ -98,7 +98,7 @@ expect_equal(CT_BS[[1]], Ctext_BS)
 
 
 # TEST 3 - new correspondence table
-tmp_dir = tempdir()
+tmp_dir = system.file("extdata/test", package = "correspondenceTables")
 csv_files = list.files(tmp_dir, pattern = ".csv")
 if (length(csv_files)>0) unlink(csv_files)
 
