@@ -769,7 +769,6 @@ updateCorrespondenceTable <- function(A, B, AStar, AB, AAStar, CSVout = NULL, Re
     }
   })
   
-  
   # Redundancy_trim parameter (MP)
   if (Redundancy_trim == TRUE){
     # Redundancy_trim parameter (MP)
@@ -777,7 +776,6 @@ updateCorrespondenceTable <- function(A, B, AStar, AB, AAStar, CSVout = NULL, Re
     col_multiple = c(grep(colnames(List)[1], colnames(List), value = T),  grep("LabelChange", colnames(List), value = T))
     
     ############################################################
-    #List[which(List[,3] == ""), 3] = "none"
     # Find unique combination of A and B and identify them with a number
     uniqueAstarB = unique(List[which(List$Redundancy == 1),c(2, 3)])
     uniqueAstarB$id_to_use = 1:nrow(uniqueAstarB)
@@ -812,7 +810,11 @@ updateCorrespondenceTable <- function(A, B, AStar, AB, AAStar, CSVout = NULL, Re
   }
   
   if (Redundancy_trim == FALSE){
-    List = List
+    #add a redundancy keep flag to indicate which row will be kept
+    dup = as.numeric(duplicated(List[,c(2,3)]))
+    List$Redundancy_keep = rep(0, nrow(List))
+    List$Redundancy_keep[which(dup == "0" & List$Redundancy == "1")] = 1
+    List = List[,c(1:5, ncol(List), 6:(ncol(List)-1))]
   }
   
   tryCatch({

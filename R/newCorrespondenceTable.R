@@ -225,11 +225,6 @@ newCorrespondenceTable <- function(Tables, CSVout = NULL, Reference = "none", Mi
     }
   }
   
-  # Check Redundancy (MP)
-  #if (!isFALSE(Redundancy_trim)){
-  #  stop(simpleError("You entered a non-allowed value for Redundancy_trim. The allowed values are \"TRUE\" (for trim) or \"FALSE\" (to show)."))
-  #}
-  
   
   # Check Reference
   if (!(Reference %in% c("A", "B", "none"))) {
@@ -1878,12 +1873,16 @@ newCorrespondenceTable <- function(Tables, CSVout = NULL, Reference = "none", Mi
          round(length(which(as.vector(correspondenceAB$Unmatched) == 1))/nrow(correspondenceAB)*100,2),"% is unmatched which exceeds the mismatch tolerance of ", MismatchTolerance)
   }
   
+  correspondenceAB = correspondenceAB_ori
+  
+  
   tryCatch({
 
     # The final correspondence table A:B is sorted, firstly, based on
     # classification A, and then, based on classification B.
     correspondenceAB <- correspondenceAB[order(correspondenceAB[, 1], correspondenceAB[,
                                                                                        (length(RRR) + 1)/2], decreasing = FALSE), ]
+     
     
     # Redundancy_trim parameter (MP)
     # Find the columns which are related to linking datasets which values need to be recorded as "Multiple"
@@ -1930,11 +1929,16 @@ newCorrespondenceTable <- function(Tables, CSVout = NULL, Reference = "none", Mi
       
     }
     } else {
+
       correspondenceAB = correspondenceAB
     }
     
     if (Redundancy_trim==FALSE){
-      correspondenceAB = correspondenceAB
+      #add a redundancy keep flag to indicate which row will be kept
+      dup = as.numeric(duplicated(correspondenceAB[,c(1,max_col)]))
+      correspondenceAB$Redundancy_keep = rep(0, nrow(correspondenceAB))
+      correspondenceAB$Redundancy_keep[which(dup == "0" & correspondenceAB$Redundancy == "1")] = 1
+      correspondenceAB = correspondenceAB[,c(1:(max_col+1), ncol(correspondenceAB), (max_col+2):(ncol(correspondenceAB)-1))]
     }
     
     

@@ -106,25 +106,26 @@ expect_equal(CT_AS[[1]], Ctext_AS)
 expect_equal(CT_BS[[1]], Ctext_BS)
 
 
-# TEST 3 - new correspondance table
-#path = "C:/Users/martina.patone/Desktop/R package/old_package/correspondenceTables/inst/extdata/test"
+# TEST 3 - new correspondence table
+tmp_dir = tempdir()
 
-#fullPath <- function(CSVraw, CSVappended){
-#  NamesCsv <- system.file("extdata/test", CSVraw, package = "correspondenceTables")
-#  A <- read.csv(NamesCsv, header = FALSE, sep = ",")
-#  for (i in 1:nrow(A)) {
-#    for (j in 1:ncol(A)) {
-#      if (A[i,j]!="") {
-#        A[i, j] <- system.file("extdata/test", A[i, j], package = "correspondenceTables")
-#      }}}
-#  write.table(x = A, file = file.path(path, CSVappended), row.names = FALSE, col.names = FALSE, sep = ",")
-#  return(A)
-#}
+fullPath = function(CSVraw, CSVappended){
+  NamesCsv <- system.file("extdata", CSVraw, package = "correspondenceTables")
+  A <- read.csv(NamesCsv, header = FALSE, sep = ",")
+  for (i in 1:nrow(A)) {
+    for (j in 1:ncol(A)) {
+      if (A[i,j]!="") {
+        A[i, j] <- system.file("extdata", A[i, j], package = "correspondenceTables")
+      }}}
+  write.table(x = A, file = file.path(tmp_dir,CSVappended), row.names = FALSE, col.names = FALSE, sep = ",")
+  return(A)
+}
 
 
-#fullPath("namesTest.csv", "names.csv")
 ##new 1
-Tables = system.file("extdata/test", "names.csv", package = "correspondenceTables")
+
+fullPath("names1.csv", "names.csv")
+Tables = system.file(file.path(tmp_dir,"names.csv"), package = "correspondenceTables")
 
 ABC = system.file("extdata/test", "ABC.csv", package = "correspondenceTables")
 ABC = utils::read.csv(ABC, sep = ",", header = TRUE, check.names = FALSE, colClasses = c("character"), encoding = "UTF-8")
@@ -137,6 +138,10 @@ TEST_trim = newCorrespondenceTable(Tables, CSVout = NULL, "none", 0.96, Redundan
 
 expect_equal(TEST[[1]][1:4], ABC)
 expect_equal(TEST_trim[[1]][1:4], ABC_Trim)
+
+
+Reference = "none"
+MismatchTolerance = 0.96
 
 
 ##new 2
