@@ -1934,10 +1934,11 @@ newCorrespondenceTable <- function(Tables, CSVout = NULL, Reference = "none", Mi
     if (Redundancy_trim==FALSE){
       #add a redundancy keep flag to indicate which row will be kept
       dup = as.numeric(duplicated(correspondenceAB[,c(1,max_col)]))
-      red_col = grep("Redundancy", colnames(correspondenceAB), value = T)
+      red_col = which(colnames(correspondenceAB) == "Redundancy")
       correspondenceAB$Redundancy_keep = rep(0, nrow(correspondenceAB))
       correspondenceAB$Redundancy_keep[which(dup == "0" & correspondenceAB$Redundancy == "1")] = 1
       correspondenceAB = correspondenceAB[,c(1:red_col, ncol(correspondenceAB), (red_col+1):(ncol(correspondenceAB)-1))]
+      correspondenceAB = correspondenceAB[,!names(correspondenceAB) %in% "id_to_use"]
     }
     
     

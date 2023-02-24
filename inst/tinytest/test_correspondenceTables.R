@@ -98,8 +98,8 @@ expect_equal(CT_BS[[1]], Ctext_BS)
 
 
 # TEST 3 - new correspondence table
-tmp_dir = system.file("extdata/test", package = "correspondenceTables")
-csv_files = list.files(tmp_dir, pattern = ".csv")
+dir = system.file("extdata/test", package = "correspondenceTables")
+csv_files = list.files(dir, pattern = ".csv")
 if (length(csv_files)>0) unlink(csv_files)
 
 fullPath = function(CSVraw, CSVappended){
@@ -110,13 +110,14 @@ fullPath = function(CSVraw, CSVappended){
       if (A[i,j]!="") {
         A[i, j] = system.file("extdata/test", A[i, j], package = "correspondenceTables")
       }}}
-  write.table(x = A, file = file.path(tmp_dir,CSVappended), row.names = FALSE, col.names = FALSE, sep = ",")
+  write.table(x = A, file = file.path(dir,CSVappended), row.names = FALSE, col.names = FALSE, sep = ",")
   return(A)
 }
 
 ##new 1
 fullPath("names1.csv", "names.csv")
-Tables = system.file(file.path(tmp_dir,"names.csv"), package = "correspondenceTables")
+TEST = newCorrespondenceTable(file.path(dir,"names.csv"), CSVout = NULL, "none", 0.96, Redundancy_trim = FALSE)
+TEST_trim = newCorrespondenceTable(file.path(dir,"names.csv"), CSVout = NULL, "none", 0.96, Redundancy_trim = TRUE)
 
 ABC = system.file("extdata/test", "ABC.csv", package = "correspondenceTables")
 ABC = utils::read.csv(ABC, sep = ",", header = TRUE, check.names = FALSE, colClasses = c("character"), encoding = "UTF-8")
@@ -124,20 +125,15 @@ ABC = utils::read.csv(ABC, sep = ",", header = TRUE, check.names = FALSE, colCla
 ABC_Trim = system.file("extdata/test", "ABC_trim.csv", package = "correspondenceTables")
 ABC_Trim = utils::read.csv(ABC_Trim, sep = ",", header = TRUE, check.names = FALSE, colClasses = c("character"), encoding = "UTF-8")
 
-TEST = newCorrespondenceTable(Tables, CSVout = NULL, "none", 0.96, Redundancy_trim = FALSE)
-TEST_trim = newCorrespondenceTable(Tables, CSVout = NULL, "none", 0.96, Redundancy_trim = TRUE)
-
-expect_equal(TEST[[1]][1:4], ABC)
+expect_equal(TEST[[1]][1:5], ABC)
 expect_equal(TEST_trim[[1]][1:4], ABC_Trim)
 
 
 ##new 2
 fullPath("names2.csv", "names.csv")
-Tables = system.file(file.path(tmp_dir,"names.csv"), package = "correspondenceTables")
 
-TEST2 = newCorrespondenceTable(Tables1, CSVout = NULL, "none", 0.96, Redundancy_trim = FALSE)
+TEST2 = newCorrespondenceTable(file.path(dir,"names.csv"), CSVout = NULL, "none", 0.96, Redundancy_trim = FALSE)
 TEST2[[1]]$sort = 1:nrow(TEST2[[1]])
-
 
 TEST2_T = system.file("extdata/test", "nomatch_test_new.csv", package = "correspondenceTables")
 TEST2_T = utils::read.csv(TEST2_T, sep = ",", header = TRUE, check.names = FALSE, colClasses = c("character"), encoding = "UTF-8")
@@ -154,5 +150,4 @@ test = merge(x,y, by=c("Unmatched","NoMatchFromA", "NoMatchFromB"), all.x = TRUE
 test = test[order(as.numeric(test$sort)),]
 TEST2_T = TEST2_T[order(as.numeric(TEST2_T$sort)),]
 
-expect_equal(test[,14], TEST2_T[,13])
-
+expect_equal(test[,15], TEST2_T[,13])
